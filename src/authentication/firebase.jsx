@@ -4,13 +4,13 @@ import { getAuth } from "firebase/auth"; // ✅ Import authentication
 
 // Your Firebase config
 const firebaseConfig = {
-  apiKey: "AIzaSyCbiL3l2Krk0knZyJM_gYmN83Kka4-s3-w",
-  authDomain: "neuro-rehab-gaming.firebaseapp.com",
-  projectId: "neuro-rehab-gaming",
-  storageBucket: "neuro-rehab-gaming.appspot.com", // ✅ Fix storage bucket typo
-  messagingSenderId: "778537768137",
-  appId: "1:778537768137:web:11a9274107926be28b2918",
-  measurementId: "G-JFZVV4P6J2"
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID
 };
 
 // Initialize Firebase
