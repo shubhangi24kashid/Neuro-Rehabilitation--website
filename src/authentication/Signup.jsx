@@ -1,9 +1,8 @@
-// src/authentication/Signup.js
 import { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "./firebase";
 import { useNavigate } from "react-router-dom";
-import "../styles/Signup.css"; // Ensure this file exists in the styles folder
+import "../styles/Signup.css"; // Ensure this file exists
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -15,7 +14,7 @@ const Signup = () => {
     e.preventDefault();
     try {
       await createUserWithEmailAndPassword(auth, email, password);
-      navigate("/");
+      navigate("/medical-form"); // Redirect to medical form after signup
     } catch (error) {
       setError("Failed to create an account. Try again.");
     }

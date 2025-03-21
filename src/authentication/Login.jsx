@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { auth } from "./firebase";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
-import "../styles/Login.css"; // Ensure this file exists in styles folder
+import { useNavigate } from "react-router-dom";
+import "../styles/Login.css"; // Ensure this file exists
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const navigate = useNavigate(); // Initialize navigate
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,7 +26,7 @@ function Login() {
     <div className="login-container">
       <div className="login-box">
         <h2 className="login-title">Login</h2>
-        
+
         {error && <p className="error-message">{error}</p>}
 
         <form onSubmit={handleSubmit} className="login-form">
