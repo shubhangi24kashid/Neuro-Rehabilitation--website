@@ -1,17 +1,16 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
-import "../styles/MedicalForm.css"; // Ensure this file exists
+import { useNavigate } from "react-router-dom"; 
+import { auth, db } from "../authentication/firebase"; // Keep only one import statement
+import { doc, setDoc } from "../authentication/firebase"; // Import Firestore functions
+import "../styles/MedicalForm.css";
+
 
 
 const MedicalForm = () => {
-  const navigate = useNavigate(); // Initialize useNavigate hook
-
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     fullName: "",
-    age: "",
     bloodType: "",
-    allergies: "",
-    medicalConditions: "",
     emergencyContact: "",
   });
 
@@ -19,13 +18,29 @@ const MedicalForm = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Medical Form Data:", formData);
-    alert("Medical details saved successfully!");
-    
-    // Redirect to the homepage after form submission
-    navigate("/");
+
+    const userId = auth.currentUser?.uid; // Get logged-in user's UID
+    if (!userId) {
+      alert("User not logged in!");
+      return;
+    }
+
+    try {
+      await setDoc(doc(db, "users", userId), {
+        fullName: formData.fullName,
+        bloodType: formData.bloodType,
+        emergencyContact: formData.emergencyContact,
+        timestamp: new Date(), // Store timestamp
+      });
+
+      alert("Medical details saved successfully!");
+      navigate("/questionnaire"); // Redirect to the questionnaire page
+    } catch (error) {
+      console.error("Error saving medical details:", error);
+      alert("Error saving data!");
+    }
   };
 
   return (
@@ -40,14 +55,7 @@ const MedicalForm = () => {
           onChange={handleChange}
           required
         />
-        <input
-          type="number"
-          name="age"
-          placeholder="Age"
-          value={formData.age}
-          onChange={handleChange}
-          required
-        />
+
         <select name="bloodType" value={formData.bloodType} onChange={handleChange} required>
           <option value="">Select Blood Type</option>
           <option value="A+">A+</option>
@@ -59,20 +67,7 @@ const MedicalForm = () => {
           <option value="AB+">AB+</option>
           <option value="AB-">AB-</option>
         </select>
-        <input
-          type="text"
-          name="allergies"
-          placeholder="Allergies (if any)"
-          value={formData.allergies}
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="medicalConditions"
-          placeholder="Medical Conditions (if any)"
-          value={formData.medicalConditions}
-          onChange={handleChange}
-        />
+
         <input
           type="text"
           name="emergencyContact"
@@ -81,6 +76,7 @@ const MedicalForm = () => {
           onChange={handleChange}
           required
         />
+
         <button type="submit">Save</button>
       </form>
     </div>

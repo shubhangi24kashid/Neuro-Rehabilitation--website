@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "./firebase";
+import { auth, db } from "./firebase"; // Import Firestore database
+import { doc, setDoc } from "firebase/firestore"; // Firestore functions
 import { useNavigate } from "react-router-dom";
-import "../styles/Signup.css"; // Ensure this file exists
+import "../styles/Signup.css"; // Ensure CSS file exists
 
 const Signup = () => {
   const [email, setEmail] = useState("");
@@ -10,13 +11,26 @@ const Signup = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  // Function to handle signup
   const handleSignup = async (e) => {
     e.preventDefault();
+    setError(""); // Reset errors before signup attempt
+
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      navigate("/medical-form"); // Redirect to medical form after signup
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user; // Firebase user object
+
+      // Store user data in Firestore
+      await setDoc(doc(db, "users", user.uid), {
+        email: user.email, // Store user email
+        uid: user.uid, // Store UID
+        createdAt: new Date() // Store account creation time
+      });
+
+      // Redirect to medical form page after signup
+      navigate("/medical-form");
     } catch (error) {
-      setError("Failed to create an account. Try again.");
+      setError(error.message || "Failed to create an account. Try again.");
     }
   };
 
@@ -25,6 +39,7 @@ const Signup = () => {
       <div className="signup-box">
         <h2 className="signup-title">Signup</h2>
         {error && <p className="error-message">{error}</p>}
+        
         <form onSubmit={handleSignup} className="signup-form">
           <div className="input-group">
             <label>Email</label>
