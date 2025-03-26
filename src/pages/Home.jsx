@@ -1,17 +1,21 @@
-import { Link } from "react-router-dom";
+import React from "react";
+import Navbar from "./header/Navbar"; // Import Navbar from the header folder
+import "../styles/Home.css"; // Import CSS for Home page
+import RecoverySection from "./header/RecoverySection";
+import JourneySection from "./header/JourneySection";
+import SuccessStories from "./Swiper/Swiper";
+import Footer from "./Footer/Footer";
 
-function Home() {
-  return (
-    <div>
-      <h1>Home Page</h1>
-      <nav>
-        <ul>
-          <li><Link to="/login">Login</Link></li>
-          <li><Link to="/signup">Signup</Link></li>
-        </ul>
-      </nav>
-    </div>
-  );
-}
+const Home = () => {
+    return (
+        <div>
+            <Navbar /> {/* Using Navbar component */}
+            <RecoverySection />
+            <JourneySection />
+            <SuccessStories />
+            <Footer />
+        </div>
+    );
+};
 
 export default Home;

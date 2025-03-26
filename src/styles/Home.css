@@ -1,0 +1,27 @@
+/* Center align the content */
+.home-content {
+  text-align: center;
+  padding: 50px 20px;
+  background-color: #f4f4f4; /* Light background for better contrast */
+  min-height: 100vh; /* Ensure full-page height */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Styling for Welcome heading */
+.home-content h1 {
+  font-size: 32px;
+  color: #333;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+/* Tagline styling */
+.tagline {
+  font-size: 18px;
+  color: #777;
+  font-weight: 500;
+  letter-spacing: 1px;
+}

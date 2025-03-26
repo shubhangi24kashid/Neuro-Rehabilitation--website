@@ -1,0 +1,123 @@
+/* General container styling */
+.success-stories-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background: #f8f9fc; /* Light background */
+  }
+  
+  /* Title styling */
+  .success-stories-container h2 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 1rem;
+  }
+  
+  /* Testimonial Card */
+  .success-card {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    max-width: 600px;
+    width: 90%;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    position: relative;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .success-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  /* User Avatar */
+  .user-avatar {
+    width: 60px;
+    height: 60px;
+    background: #f48fb1; /* Soft pink */
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin: 0 auto 1rem;
+  }
+  
+  /* User Name */
+  .user-name {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #222;
+    margin-bottom: 0.2rem;
+  }
+  
+  /* User Condition */
+  .user-condition {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 1rem;
+  }
+  
+  /* Testimonial Text */
+  .testimonial-text {
+    font-size: 1rem;
+    color: #444;
+    font-style: italic;
+    margin-bottom: 1rem;
+  }
+  
+  /* Star Rating */
+  .star-rating {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    margin-bottom: 1rem;
+  }
+  
+  /* Navigation Buttons */
+  .swiper-button-prev,
+  .swiper-button-next {
+    background: #e0e0e0;
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .swiper-button-prev:hover,
+  .swiper-button-next:hover {
+    background: #d1c4e9; /* Light purple */
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .success-card {
+      width: 100%;
+      padding: 1.5rem;
+    }
+  
+    .success-stories-container h2 {
+      font-size: 1.5rem;
+    }
+  
+    .user-avatar {
+      width: 50px;
+      height: 50px;
+      font-size: 1.2rem;
+    }
+  
+    .user-name {
+      font-size: 1.2rem;
+    }
+  
+    .testimonial-text {
+      font-size: 0.95rem;
+    }
+  }
+  
