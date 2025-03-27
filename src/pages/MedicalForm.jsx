@@ -1,12 +1,10 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; 
-import { auth, db } from "../authentication/firebase"; // Keep only one import statement
-import { doc, setDoc } from "../authentication/firebase"; // Import Firestore functions
+import { useNavigate } from "react-router-dom";
+import { auth, db, doc, setDoc } from "../authentication/firebase"; 
+
 import "../styles/MedicalForm.css";
 
-
-
-const MedicalForm = () => {
+const MedicalForm = ({ setIsAuthenticated, setHasCompletedForms }) => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     fullName: "",
@@ -21,19 +19,29 @@ const MedicalForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const userId = auth.currentUser?.uid; // Get logged-in user's UID
+    const userId = auth.currentUser?.uid;
     if (!userId) {
       alert("User not logged in!");
       return;
     }
 
     try {
-      await setDoc(doc(db, "users", userId), {
-        fullName: formData.fullName,
-        bloodType: formData.bloodType,
-        emergencyContact: formData.emergencyContact,
-        timestamp: new Date(), // Store timestamp
-      });
+      await setDoc(
+        doc(db, "users", userId),
+        {
+          fullName: formData.fullName,
+          bloodType: formData.bloodType,
+          emergencyContact: formData.emergencyContact,
+          hasCompletedForms: true, // Mark completion
+        },
+        { merge: true }
+      );
+
+      // Update localStorage and parent state
+      const updatedUserData = { isAuthenticated: true, hasCompletedForms: true };
+      localStorage.setItem("user", JSON.stringify(updatedUserData));
+      setIsAuthenticated(updatedUserData.isAuthenticated);
+      setHasCompletedForms(updatedUserData.hasCompletedForms);
 
       alert("Medical details saved successfully!");
       navigate("/questionnaire"); // Redirect to the questionnaire page

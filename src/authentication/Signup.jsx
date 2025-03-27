@@ -1,77 +1,55 @@
 import { useState } from "react";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth, db } from "./firebase"; // Import Firestore database
-import { doc, setDoc } from "firebase/firestore"; // Firestore functions
 import { useNavigate } from "react-router-dom";
-import "../styles/Signup.css"; // Ensure CSS file exists
+import { auth, db, doc, setDoc } from "../authentication/firebase";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 
 const Signup = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const navigate = useNavigate();
 
-  // Function to handle signup
   const handleSignup = async (e) => {
     e.preventDefault();
-    setError(""); // Reset errors before signup attempt
 
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user; // Firebase user object
+      const user = userCredential.user;
 
-      // Store user data in Firestore
+      // Store user info in Firestore
       await setDoc(doc(db, "users", user.uid), {
-        email: user.email, // Store user email
-        uid: user.uid, // Store UID
-        createdAt: new Date() // Store account creation time
+        email: user.email,
+        hasCompletedForms: false, // Mark user as a first-time user
       });
 
-      // Redirect to medical form page after signup
+      // Update localStorage
+      localStorage.setItem("user", JSON.stringify({ isAuthenticated: true, hasCompletedForms: false }));
+
+      // Redirect to Medical Form
       navigate("/medical-form");
     } catch (error) {
-      setError(error.message || "Failed to create an account. Try again.");
+      console.error("Error signing up:", error);
+      alert("Signup failed!");
     }
   };
 
   return (
-    <div className="signup-container">
-      <div className="signup-box">
-        <h2 className="signup-title">Signup</h2>
-        {error && <p className="error-message">{error}</p>}
-        
-        <form onSubmit={handleSignup} className="signup-form">
-          <div className="input-group">
-            <label>Email</label>
-            <input
-              type="email"
-              placeholder="Enter email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-
-          <div className="input-group">
-            <label>Password</label>
-            <input
-              type="password"
-              placeholder="Enter password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-
-          <button type="submit" className="signup-button">Signup</button>
-        </form>
-
-        <p className="login-text">
-          Already have an account?{" "}
-          <a href="/login" className="login-link">Login here</a>
-        </p>
-      </div>
-    </div>
+    <form onSubmit={handleSignup}>
+      <input
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        required
+      />
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        required
+      />
+      <button type="submit">Sign Up</button>
+    </form>
   );
 };
 
